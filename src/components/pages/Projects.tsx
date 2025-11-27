@@ -3,8 +3,8 @@ import { Header } from '../Header';
 import { PROJECTS } from '@/lib/data';
 
 export const ProjectsPage: React.FC = () => (
-    <div className="p-4 md:p-12 h-full overflow-y-auto custom-scroll paper-texture relative">
-        <div className="grain"></div>
+    <div className="p-4 md:p-12 h-full overflow-y-auto custom-scroll relative">
+        
         <div className="relative z-10">
             <Header title="Feature Stories" sub="A deep dive into recent technical endeavors and products." />
 

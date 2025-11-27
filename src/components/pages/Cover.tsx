@@ -7,8 +7,8 @@ interface CoverPageProps {
 }
 
 export const CoverPage: React.FC<CoverPageProps> = ({ goToProjects }) => (
-    <div className="p-4 md:p-12 h-full overflow-y-auto custom-scroll paper-texture relative">
-        <div className="grain"></div>
+    <div className="p-4 md:p-12 h-full overflow-y-auto custom-scroll relative">
+        
         <div className="relative z-10">
             <Header title="The Dev Chronicles" />
 
