@@ -152,7 +152,7 @@ export default function App() {
 
       {/* Styles Injection */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap');
         
         .font-serif { font-family: 'Instrument Serif', serif; }
         .font-mono { font-family: 'DM Mono', monospace; }
@@ -170,7 +170,7 @@ export default function App() {
 
       {/* --- Main Content Container --- */}
       {/* Added border-x here to span full height of the page */}
-      <div ref={containerRef} className="relative w-full max-w-[1600px] min-h-screen border-x border-current page-perspective px-4 md:px-12">
+      <div ref={containerRef} className="relative w-full max-w-[1600px] min-h-screen border-x border-current page-perspective px-4 md:px-12 flex flex-col">
 
         {/* --- Bookmark Navigation (Attached to Content, Outwards) --- */}
         <div className="absolute top-[150px] -right-[1px] z-50 flex flex-col items-end pointer-events-none translate-x-full">
@@ -189,17 +189,18 @@ export default function App() {
                 className={`
                   pointer-events-auto
                   relative pl-6 pr-3 py-4
-                  font-mono text-[10px] font-bold uppercase tracking-widest 
+                  font-mono text-xs font-black uppercase tracking-widest 
                   transition-all duration-300 transform origin-left
-                  bg-red-600 text-white hover:bg-red-700 hover:translate-x-1 z-10
-                  border-y border-r border-red-800/20
-                  rounded-r-sm
+                  bg-red-700 text-white hover:bg-red-800 hover:translate-x-1 z-10
+                  border-y border-r border-red-900/30
+                  rounded-r-sm shadow-xl
                 `}
                 style={{
                   writingMode: 'vertical-rl',
                   textOrientation: 'mixed',
                   marginTop: '-10px', // Overlap effect
-                  marginRight: '0px' // Touch the line (handled by parent positioning)
+                  marginRight: '0px', // Touch the line (handled by parent positioning)
+                  boxShadow: '-4px 0 10px rgba(0,0,0,0.5)' // Shadow at intersection
                 }}
               >
                 {item}
@@ -210,13 +211,14 @@ export default function App() {
 
         {/* --- DYNAMIC PAGE CONTENT --- */}
         {/* Removed border-x from here since it's on the parent now */}
-        <main ref={contentRef} className="min-h-full bg-[#1a1a1a] page-content origin-left p-6 md:p-12 relative">
+        {/* Added flex-grow to ensure it fills height */}
+        <main ref={contentRef} className="flex-grow bg-[#1a1a1a] page-content origin-left p-6 md:p-12 relative flex flex-col">
 
           {/* FRONT PAGE VIEW */}
           {activePage === 'front' && (
-            <>
+            <div className="flex flex-col h-full">
               {/* Front Page Header */}
-              <header className="mb-8 border-b-4 border-current pb-2">
+              <header className="mb-8 border-b-4 border-current pb-2 flex-shrink-0">
                 <div className="flex justify-between items-end mb-2">
                   <div className="flex flex-col">
                     <span className="font-mono text-xs md:text-sm uppercase tracking-[0.2em] mb-1 opacity-70">
@@ -245,9 +247,10 @@ export default function App() {
                 </div>
               </header>
 
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-0 border-t border-current">
+              {/* Grid with full height columns */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-0 border-t border-current flex-grow items-stretch">
                 {/* LEFT COLUMN */}
-                <aside className="col-span-1 md:col-span-3 border-b md:border-b-0 md:border-r border-current p-6 flex flex-col gap-8">
+                <aside className="col-span-1 md:col-span-3 border-b md:border-b-0 md:border-r border-current p-6 flex flex-col gap-8 min-h-full">
                   <div className="space-y-4">
                     <div className={`aspect-[4/5] w-full bg-zinc-800 grayscale contrast-125 relative overflow-hidden group`}>
                       <div className="absolute inset-0 flex items-center justify-center opacity-30">
@@ -291,7 +294,7 @@ export default function App() {
                 </aside>
 
                 {/* CENTER COLUMN */}
-                <section className="col-span-1 md:col-span-6 p-6 md:px-8 border-b md:border-b-0 md:border-r border-current relative">
+                <section className="col-span-1 md:col-span-6 p-6 md:px-8 border-b md:border-b-0 md:border-r border-current relative min-h-full flex flex-col">
                   <div className="absolute top-0 right-0 p-2 opacity-10">
                     <Network size={120} />
                   </div>
@@ -317,7 +320,7 @@ export default function App() {
                     </p>
                   </div>
 
-                  <div className="mt-12 pt-8 border-t border-current">
+                  <div className="mt-auto pt-8 border-t border-current">
                     <SectionTitle>Latest Deployment</SectionTitle>
                     <div className="group cursor-pointer">
                       <div className="flex justify-between items-baseline mb-2">
@@ -335,7 +338,7 @@ export default function App() {
                 </section>
 
                 {/* RIGHT COLUMN */}
-                <aside className="col-span-1 md:col-span-3 p-6 flex flex-col gap-8">
+                <aside className="col-span-1 md:col-span-3 p-6 flex flex-col gap-8 min-h-full">
                   <div>
                     <SectionTitle>Tech Stack</SectionTitle>
                     <ul className="grid grid-cols-1 gap-2">
@@ -364,12 +367,12 @@ export default function App() {
                   </div>
                 </aside>
               </div>
-            </>
+            </div>
           )}
 
           {/* PROJECTS PAGE VIEW */}
           {activePage === 'projects' && (
-            <div className="max-w-5xl mx-auto">
+            <div className="max-w-5xl mx-auto w-full flex-grow">
               <header className="mb-12 border-b border-current pb-6 flex justify-between items-end">
                 <div>
                   <span className="font-mono text-xs uppercase tracking-widest opacity-60">Section B</span>
@@ -446,7 +449,7 @@ export default function App() {
 
           {/* BLOGS PAGE VIEW */}
           {activePage === 'blogs' && (
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-4xl mx-auto w-full flex-grow">
               <header className="mb-12 border-b border-current pb-6 flex justify-between items-end">
                 <div>
                   <span className="font-mono text-xs uppercase tracking-widest opacity-60">Section C</span>
@@ -485,7 +488,7 @@ export default function App() {
 
           {/* CONTACT PAGE VIEW */}
           {activePage === 'contact' && (
-            <div className="flex items-center justify-center h-full min-h-[800px]">
+            <div className="flex items-center justify-center h-full flex-grow">
               <div className="max-w-2xl w-full border-4 border-double border-current p-8 md:p-12 text-center bg-current/5">
                 <header className="mb-8">
                   <span className="font-mono text-xs uppercase tracking-widest opacity-60">Section D</span>
@@ -516,7 +519,7 @@ export default function App() {
         </main>
 
         {/* FOOTER */}
-        <footer className="mt-4 flex justify-between items-center font-mono text-[10px] uppercase tracking-wider opacity-60 px-2">
+        <footer className="mt-auto pt-4 flex justify-between items-center font-mono text-[10px] uppercase tracking-wider opacity-60 px-2 pb-2">
           <div>
             &copy; 2025 Sanjay Codes.
           </div>
