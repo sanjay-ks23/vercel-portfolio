@@ -7,7 +7,7 @@ export const BLOGS = [
         readTime: "5 min read",
         slug: "small-models-effectiveness",
         content: `
-      <p>In the race for Artificial General Intelligence, the industry has been obsessed with scale. "Bigger is better" has been the mantra, with parameter counts exploding into the trillions. However, a quiet revolution is happening at the other end of the spectrum: the rise of small, highly efficient models.</p>
+      <p>The race for Artificial General Intelligence, the industry has been obsessed with scale. "Bigger is better" has been the mantra, with parameter counts exploding into the trillions. However, a quiet revolution is happening at the other end of the spectrum: the rise of small, highly efficient models.</p>
       
       <p>Recent research into knowledge distillation and model pruning has shown that we can retain up to 95% of a large model's performance with only a fraction of the parameters. This isn't just about saving storage; it's about democratization. Small models can run on consumer hardware, edge devices, and even mobile phones, bringing the power of AI to places previously thought impossible.</p>
       
