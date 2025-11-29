@@ -246,6 +246,15 @@ export default function App() {
           })}
         </div>
 
+        {/* --- Mobile Bottom Page Stack --- */}
+        <div className="fixed bottom-0 left-0 w-full z-40 md:hidden pointer-events-none">
+          <div className="flex flex-col-reverse items-center pb-2">
+            <div className="h-[2px] w-[94%] bg-[#d4d4d4] border-t border-zinc-500 shadow-[0_-1px_2px_rgba(0,0,0,0.3)]"></div>
+            <div className="h-[2px] w-[96%] bg-[#d4d4d4] border-t border-zinc-500 shadow-[0_-1px_2px_rgba(0,0,0,0.3)]"></div>
+            <div className="h-[2px] w-[98%] bg-[#d4d4d4] border-t border-zinc-500 shadow-[0_-1px_2px_rgba(0,0,0,0.3)]"></div>
+          </div>
+        </div>
+
         {/* --- DYNAMIC PAGE CONTENT --- */}
         {/* Removed border-x from here since it's on the parent now */}
         {/* Added flex-grow to ensure it fills height */}

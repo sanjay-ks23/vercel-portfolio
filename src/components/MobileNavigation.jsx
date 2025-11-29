@@ -65,6 +65,13 @@ const MobileNavigation = ({ activePage, onNavigate }) => {
                     );
                 })}
             </div>
+
+            {/* Book Page Stack Effect */}
+            <div className="relative z-0 -mt-[1px]">
+                <div className="h-[2px] w-[98%] mx-auto bg-[#d4d4d4] border-b border-zinc-400 shadow-sm"></div>
+                <div className="h-[2px] w-[96%] mx-auto bg-[#d4d4d4] border-b border-zinc-400 shadow-sm"></div>
+                <div className="h-[2px] w-[94%] mx-auto bg-[#d4d4d4] border-b border-zinc-400 shadow-sm"></div>
+            </div>
         </div>
     );
 };
