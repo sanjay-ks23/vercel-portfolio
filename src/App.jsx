@@ -189,7 +189,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] text-[#e5e5e5] overflow-x-hidden flex justify-center">
+    <div className="min-h-screen bg-[#1a1a1a] text-[#e5e5e5] overflow-x-hidden flex justify-center md:pr-16 md:pl-16">
 
       {/* Styles Injection */}
       <style>{`
@@ -210,41 +210,57 @@ export default function App() {
       `}</style>
 
       {/* --- Main Content Container --- */}
-      {/* Added border-x here to span full height of the page */}
-      <div ref={containerRef} className="relative w-full max-w-[1600px] min-h-screen border-x border-current page-perspective px-4 md:px-12 flex flex-col">
+      <div ref={containerRef} className="relative w-full max-w-[1600px] min-h-screen border-x border-current page-perspective px-4 md:px-12 flex flex-col pb-20 md:pb-0">
 
-        {/* --- Bookmark Navigation (Attached to Content, Outwards) --- */}
-        <div className="absolute top-[150px] -right-[1px] z-50 flex flex-col items-end pointer-events-none translate-x-full">
-          {['Front Page', 'Projects', 'Blogs', 'Contact'].map((item, idx) => {
+        {/* --- Desktop Bookmark Navigation (Side) --- */}
+        <div className="absolute top-[150px] -right-[1px] z-50 hidden md:flex flex-col items-end pointer-events-none translate-x-full">
+          {['Front Page', 'Projects', 'Blogs', 'Contact'].map((item) => {
             const id = item.toLowerCase().replace(' ', '');
             const targetPage = id === 'frontpage' ? 'front' : id;
-            const isActive = activePage === targetPage;
-
-            // Hide active bookmark
-            if (isActive) return null;
+            if (activePage === targetPage) return null;
 
             return (
               <button
                 key={item}
                 onClick={() => handlePageChange(targetPage)}
                 className={`
-                  pointer-events-auto
-                  relative pl-6 pr-3 py-4
+                  pointer-events-auto relative pl-6 pr-3 py-4
                   font-mono text-xs font-black uppercase tracking-widest 
                   transition-all duration-300 transform origin-left
                   bg-red-700 text-white hover:bg-red-800 hover:translate-x-1 z-10
-                  border-y border-r border-red-900/30
-                  rounded-r-sm shadow-xl
+                  border-y border-r border-red-900/30 rounded-r-sm shadow-xl
                 `}
                 style={{
                   writingMode: 'vertical-rl',
                   textOrientation: 'mixed',
-                  marginTop: '-10px', // Overlap effect
-                  marginRight: '0px', // Touch the line (handled by parent positioning)
-                  boxShadow: '-4px 0 10px rgba(0,0,0,0.5)' // Shadow at intersection
+                  marginTop: '-10px',
+                  boxShadow: '-4px 0 10px rgba(0,0,0,0.5)'
                 }}
               >
                 {item}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* --- Mobile Bottom Navigation --- */}
+        <div className="fixed bottom-0 left-0 w-full z-50 md:hidden bg-[#1a1a1a] border-t border-current flex justify-around items-center p-2 shadow-[0_-4px_10px_rgba(0,0,0,0.5)]">
+          {['Front Page', 'Projects', 'Blogs', 'Contact'].map((item) => {
+            const id = item.toLowerCase().replace(' ', '');
+            const targetPage = id === 'frontpage' ? 'front' : id;
+            const isActive = activePage === targetPage;
+
+            return (
+              <button
+                key={item}
+                onClick={() => handlePageChange(targetPage)}
+                className={`
+                  flex-1 py-3 text-center font-mono text-[10px] font-black uppercase tracking-widest
+                  transition-colors duration-200
+                  ${isActive ? 'bg-red-700 text-white' : 'text-zinc-500 hover:text-red-600'}
+                `}
+              >
+                {item === 'Front Page' ? 'Home' : item}
               </button>
             )
           })}
