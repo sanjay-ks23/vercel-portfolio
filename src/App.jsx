@@ -4,7 +4,7 @@ import {
   Mail, MapPin, Calendar, Layers, Cpu, Code, ExternalLink,
   Brain, Database, Network, Terminal, BookOpen, PenTool, ArrowRight, ArrowLeft, ChevronLeft, ChevronRight
 } from 'lucide-react';
-import EmailComposer from './components/EmailComposer';
+import MobileNavigation from './components/MobileNavigation';
 import gsap from 'gsap';
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
@@ -210,10 +210,13 @@ export default function App() {
       `}</style>
 
       {/* --- Main Content Container --- */}
-      <div ref={containerRef} className="relative w-full max-w-[1600px] min-h-screen border-x border-current page-perspective px-4 md:px-12 flex flex-col md:pb-0">
+      <div ref={containerRef} className="relative w-full max-w-[1600px] min-h-screen border-x border-current page-perspective px-4 md:px-12 flex flex-col pt-20 md:pt-0 md:pb-0">
 
-        {/* --- Bookmark Navigation (Side) --- */}
-        <div className="absolute top-[150px] -right-[1px] z-50 flex flex-col items-end pointer-events-none translate-x-full scale-75 origin-left md:scale-100 transition-transform">
+        {/* --- Mobile Navigation (Top) --- */}
+        <MobileNavigation activePage={activePage} onNavigate={handlePageChange} />
+
+        {/* --- Desktop Bookmark Navigation (Side) --- */}
+        <div className="absolute top-[150px] -right-[1px] z-50 hidden md:flex flex-col items-end pointer-events-none translate-x-full">
           {['Front Page', 'Projects', 'Blogs', 'Contact'].map((item) => {
             const id = item.toLowerCase().replace(' ', '');
             const targetPage = id === 'frontpage' ? 'front' : id;
