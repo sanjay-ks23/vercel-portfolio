@@ -210,7 +210,7 @@ export default function App() {
       `}</style>
 
       {/* --- Main Content Container --- */}
-      <div ref={containerRef} className="relative w-full max-w-[1600px] min-h-screen border-x border-current page-perspective px-4 md:px-12 flex flex-col pt-24 md:pt-0 md:pb-0 border-l-2 md:border-l border-[#e5e5e5] md:border-current ml-2 md:ml-0">
+      <div ref={containerRef} className="relative w-full max-w-[1600px] min-h-screen border-x border-current page-perspective px-4 md:px-12 flex flex-col pt-12 md:pt-0 md:pb-0 md:border-l md:border-current">
 
         {/* --- Mobile Navigation (Top) --- */}
         <MobileNavigation activePage={activePage} onNavigate={handlePageChange} />
