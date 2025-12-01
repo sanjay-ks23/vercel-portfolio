@@ -209,11 +209,10 @@ export default function App() {
         }
       `}</style>
 
+      <MobileNavigation activePage={activePage} onNavigate={handlePageChange} />
+
       {/* --- Main Content Container --- */}
       <div ref={containerRef} className="relative w-full max-w-[1600px] min-h-screen border-x border-current page-perspective px-4 md:px-12 flex flex-col pt-12 md:pt-0 md:pb-0 md:border-l md:border-current">
-
-        {/* --- Mobile Navigation (Top) --- */}
-        <MobileNavigation activePage={activePage} onNavigate={handlePageChange} />
 
         {/* --- Desktop Bookmark Navigation (Side) --- */}
         <div className="absolute top-[150px] -right-[1px] z-50 hidden md:flex flex-col items-end pointer-events-none translate-x-full">
@@ -246,14 +245,7 @@ export default function App() {
           })}
         </div>
 
-        {/* --- Mobile Bottom Page Stack --- */}
-        <div className="fixed bottom-0 left-0 w-full z-40 md:hidden pointer-events-none">
-          <div className="flex flex-col-reverse items-center pb-2">
-            <div className="h-[2px] w-[94%] bg-[#d4d4d4] border-t border-zinc-500 shadow-[0_-1px_2px_rgba(0,0,0,0.3)]"></div>
-            <div className="h-[2px] w-[96%] bg-[#d4d4d4] border-t border-zinc-500 shadow-[0_-1px_2px_rgba(0,0,0,0.3)]"></div>
-            <div className="h-[2px] w-[98%] bg-[#d4d4d4] border-t border-zinc-500 shadow-[0_-1px_2px_rgba(0,0,0,0.3)]"></div>
-          </div>
-        </div>
+
 
         {/* --- DYNAMIC PAGE CONTENT --- */}
         {/* Removed border-x from here since it's on the parent now */}
