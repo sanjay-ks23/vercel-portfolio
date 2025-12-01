@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Sun, Moon, ArrowUpRight, Github, Twitter, Linkedin,
   Mail, MapPin, Calendar, Layers, Cpu, Code, ExternalLink,
-  Brain, Database, Network, Terminal, BookOpen, PenTool, ArrowRight, ArrowLeft, ChevronLeft, ChevronRight
+  Brain, Database, Network, X, Terminal, BookOpen, PenTool, ArrowRight, ArrowLeft, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import MobileNavigation from './components/MobileNavigation';
 import ReactMarkdown from 'react-markdown';
@@ -26,6 +26,89 @@ const SocialLink = ({ href, icon: Icon, label, size = 16, textSize = "text-xs" }
     </span>
   </a>
 );
+
+const ExperienceModal = ({ experience, onClose }) => {
+  if (!experience) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-[2px]" onClick={onClose}>
+      <div
+        className="bg-[#f4f1ea] text-black w-full max-w-2xl border-4 border-double border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] relative"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="flex justify-between items-center p-4 border-b-2 border-black">
+          <h3 className="font-serif text-2xl font-bold uppercase tracking-tight">Experience Detail</h3>
+          <button onClick={onClose} className="text-black hover:text-red-600 transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="p-6 max-h-[80vh] overflow-y-auto">
+          <div className="flex gap-4 mb-6 border-b border-dashed border-black/30 pb-6">
+            <div className="w-16 h-16 bg-black text-white rounded-none flex items-center justify-center flex-shrink-0 border-2 border-black">
+              <span className="font-serif text-3xl font-bold">{experience.company[0]}</span>
+            </div>
+            <div>
+              <h2 className="font-serif text-2xl font-bold leading-none mb-1">{experience.role}</h2>
+              <div className="font-mono text-sm font-bold uppercase tracking-wider text-red-600 mb-1">{experience.company}</div>
+              <div className="font-mono text-xs opacity-70">
+                {experience.period} • {experience.location}
+              </div>
+            </div>
+          </div>
+
+          <div className="font-serif text-lg leading-relaxed space-y-4 text-justify">
+            {experience.fullDescription}
+          </div>
+
+          {experience.skills && (
+            <div className="mt-8 pt-4 border-t-2 border-black">
+              <div className="font-mono text-xs font-bold uppercase mb-2 bg-black text-white inline-block px-2 py-1">Skills Deployed</div>
+              <div className="font-mono text-xs leading-relaxed mt-2">
+                {experience.skills}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PublicationModal = ({ publication, onClose }) => {
+  if (!publication) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-[2px]" onClick={onClose}>
+      <div
+        className="bg-[#f4f1ea] text-black w-full max-w-2xl border-4 border-double border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] relative"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="flex justify-between items-center p-4 border-b-2 border-black">
+          <h3 className="font-serif text-2xl font-bold uppercase tracking-tight">Publication Detail</h3>
+          <button onClick={onClose} className="text-black hover:text-red-600 transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="p-6 max-h-[80vh] overflow-y-auto">
+          <div className="mb-6 border-b border-dashed border-black/30 pb-6">
+            <h2 className="font-serif text-2xl font-bold leading-tight mb-2">{publication.title}</h2>
+            <div className="font-mono text-sm font-bold uppercase tracking-wider text-red-600 mb-1">{publication.publisher}</div>
+            <div className="font-mono text-xs opacity-70 mb-4">
+              {publication.date} • <a href={publication.link} target="_blank" rel="noopener noreferrer" className="underline hover:text-red-600">IEEE Xplore</a>
+            </div>
+          </div>
+
+          <div className="font-serif text-lg leading-relaxed space-y-4 text-justify">
+            <p className="font-bold">Abstract:</p>
+            {publication.abstract}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const SectionTitle = ({ children, className = "" }) => (
   <h3 className={`font-serif text-2xl font-bold uppercase border-b-2 border-current mb-4 pb-1 tracking-tight ${className}`}>
@@ -78,16 +161,61 @@ const STACK = [
 
 const EXPERIENCE = [
   {
+    period: "Oct 2025 - Present",
     role: "Machine Learning Engineer",
-    company: "DataMinds AI",
-    period: "2023 - Present",
-    desc: "Architecting scalable LLM inference engines and optimizing model latency by 60%."
+    company: "HyER Power",
+    type: "Freelance",
+    duration: "3 mos",
+    location: "Remote",
+    desc: "Freelance ML Engineer.",
+    fullDescription: "Freelance Machine Learning Engineer contributing to advanced power systems optimization.",
+    skills: "PyTorch · Deep Learning · TensorFlow"
   },
   {
-    role: "AI Researcher",
-    company: "Neural Labs",
-    period: "2021 - 2023",
-    desc: "Published research on transformer interpretability and deployed CV models to production."
+    period: "Jun 2025 - Present",
+    role: "AI/ML Engineer - Founding Member",
+    company: "SlateMate",
+    type: "Part-time",
+    duration: "7 mos",
+    location: "Chennai, Tamil Nadu, India · Hybrid",
+    desc: "Founding AI Engineer. Architecting agentic systems & content moderation frameworks.",
+    fullDescription: "Founding member driving the R&D and architecture of AI agentic systems. Focused on building scalable, intelligent frameworks for content moderation and digital well-being designed to protect the next generation.",
+    skills: "AI Architecture · Agentic Systems · R&D"
+  },
+  {
+    period: "Oct 2024 - Mar 2025",
+    role: "Machine Learning Researcher",
+    company: "National Institute of Wind Energy",
+    type: "Full-time",
+    duration: "6 mos",
+    location: "Chennai, Tamil Nadu, India",
+    desc: "ML Researcher. Built TFT models for energy forecasting & uncertainty quantification.",
+    fullDescription: "Engineered a Temporal Fusion Transformer (TFT) from scratch for Annual Energy Production (AEP) forecasting, achieving a 0.040 MSE on real-time operational datasets.\n\nArchitected a custom loss function and zero-shot learning pipeline, enabling robust model generalization across diverse Indian substations without site-specific retraining.\n\nQuantified long-term estimation uncertainty via Monte Carlo simulations, collaborating with researchers from DTU Wind Energy Systems (TOPFARM) to enhance grid resource planning.",
+    skills: "PyTorch · Time Series Forecasting · Predictive Modeling · Deep Learning · Data Analytics"
+  }
+];
+
+const PUBLICATIONS = [
+  {
+    title: "Automated Safety Compliance Monitoring in Industrial Environments with Autonomous Rover",
+    publisher: "IEEE",
+    date: "2024",
+    link: "https://ieeexplore.ieee.org/document/10739308",
+    abstract: "In today's industrial sector, the efficient monitoring of safety compliance is essential. The number of industrial accidents has been on the rise and this study proposes an alternate approach to traditional monitoring systems, designed to enhance safety by integrating NVIDIA’s Jetson Nano for data processing and computer vision supported by NVIDIA's DeepStream SDK pipeline for real-time video analytics. Equipped with IR and ultrasonic sensors, the rover autonomously navigates and detects obstacles while seamlessly sending over data from the edge device to the cloud through the integration of Azure IoT resources, it achieves efficient data communication, enabling real-time safety management and analysis."
+  },
+  {
+    title: "Securing Patient Health Records Using Blockchain",
+    publisher: "IEEE",
+    date: "2024",
+    link: "https://ieeexplore.ieee.org/document/10739100",
+    abstract: "Traditional Electronic Health Records (EHRs) raise red flags about data privacy, security, and patient control. This research tackles these issues by proposing a new system where patients call the shots on their medical information. Our blockchain and InterPlanetary File System (IPFS) system puts patients in the driver's seat, granting them complete ownership and oversight of their health data. Patients securely submit their formatted medical history through a dedicated website, where it's stored on IPFS using a decentralized platform like Pinata. A unique code (Content Identifier or CID) acts like a key, linking the data to the patient's blockchain address via a smart contract (coded rules) for guaranteed accuracy and tracking. Our design prioritizes patient-controlled access. Healthcare providers can't access the data without the patient's explicit go-ahead. Access requests are sent directly to the patient, who has the final say on approval, ensuring their data privacy is always protected. Approved requests include the CID, allowing authorized physicians to retrieve the patient's data directly from IPFS storage. But patient control goes beyond just reacting to access requests. Our system empowers patients to be proactive. Using their unique login credentials, they can grab their CID directly from the blockchain. This retrieval process can be integrated into a secure patient portal or mobile app. With their CID in hand, patients can directly share it with chosen physicians, fostering collaboration in care without relying on intermediary platforms. This streamlined data exchange empowers patients and fosters a more collaborative healthcare environment where they actively manage their health information."
+  },
+  {
+    title: "Block-Chain Enhanced Patient Triage System",
+    publisher: "IEEE",
+    date: "2024",
+    link: "https://ieeexplore.ieee.org/document/10739156",
+    abstract: "In today's fast-paced healthcare environment, efficient management of patient records and seamless patient-provider communication is crucial. This study proposes a comprehensive solution integrating blockchain technology (Ethereum), frontend web interfaces, natural language processing (NLP), and adverse drug event detecting functions. Through a user-friendly React.js interface, patients input health data securely, while NLP automates medical information extraction from conversations. ADE detectors identify drug interactions and adverse events, enhancing care and safety. Ethereum integration via Metamask ensures secure record storage, with IPFS storage and CIDs enabling encrypted data sharing. A smart contract on Ethereum automates data management for transparency and accountability."
   }
 ];
 
@@ -131,6 +259,9 @@ export default function App() {
       description: 'The recursive interface you are currently navigating. Built with React and Vite, featuring a custom "Newspaper" design system, dynamic GitHub integration, and immersive GSAP animations. Engineered for performance and accessibility, serving as a live demonstration of modern frontend architecture.'
     }
   };
+
+  const [selectedExperience, setSelectedExperience] = useState(null);
+  const [selectedPublication, setSelectedPublication] = useState(null);
 
   useEffect(() => {
     // Fetch GitHub Repos
@@ -436,7 +567,7 @@ export default function App() {
                 <section className="col-span-1 md:col-span-6 p-6 md:px-8 border-b md:border-b-0 md:border-r border-current relative min-h-full flex flex-col">
                   <Badge>Lead Story</Badge>
 
-                  <h2 className="font-serif text-5xl md:text-7xl font-bold mt-6 mb-6 leading-[0.9] tracking-tight w-full">
+                  <h2 className="font-serif text-5xl md:text-7xl font-bold mt-6 mb-2 leading-[0.9] tracking-tight w-full">
                     My <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">Professional</span> Journey
                   </h2>
 
@@ -457,27 +588,8 @@ export default function App() {
                   </div>
 
                   <div className="mt-auto pt-8 border-t border-current">
-                    <SectionTitle>Latest Deployment</SectionTitle>
-                    <div className="group cursor-pointer">
-                      <div className="flex justify-between items-baseline mb-2">
-                        <h4 className="text-2xl font-bold group-hover:text-red-600 transition-colors">Neuro-Vision Pipeline</h4>
-                        <ArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                      </div>
-                      <p className="font-mono text-sm opacity-70 mb-4 max-w-md">
-                        End-to-end object detection pipeline optimized for edge devices using quantized YOLOv8 models.
-                      </p>
-                      <div className="w-full h-48 bg-current opacity-10 group-hover:opacity-20 transition-opacity flex items-center justify-center border border-dashed border-current">
-                        <span className="font-mono text-xs">System Architecture Diagram</span>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-
-                {/* RIGHT COLUMN */}
-                <aside className="col-span-1 md:col-span-3 p-6 flex flex-col gap-8 min-h-full">
-                  <div>
                     <SectionTitle>Tech Stack</SectionTitle>
-                    <ul className="grid grid-cols-1 gap-2">
+                    <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
                       {STACK.map(tech => (
                         <li key={tech} className="flex items-center gap-2 font-mono text-xs border-b border-dashed border-current/30 pb-2">
                           <div className="w-1.5 h-1.5 bg-red-600" />
@@ -486,17 +598,33 @@ export default function App() {
                       ))}
                     </ul>
                   </div>
+                </section>
 
+                {/* RIGHT COLUMN */}
+                <aside className="col-span-1 md:col-span-3 p-6 flex flex-col gap-8 min-h-full">
                   <div>
                     <SectionTitle>Career Timeline</SectionTitle>
                     <div className="relative border-l border-current ml-1 space-y-8 pl-6 py-2">
                       {EXPERIENCE.map((exp, i) => (
-                        <div key={i} className="relative">
-                          <div className="absolute -left-[29px] top-1.5 w-3 h-3 bg-red-600 rounded-full border-2 border-[var(--bg-paper)]" />
+                        <div key={i} className="relative group cursor-pointer" onClick={() => setSelectedExperience(exp)}>
+                          <div className="absolute -left-[29px] top-1.5 w-3 h-3 bg-red-600 rounded-full border-2 border-[var(--bg-paper)] group-hover:scale-125 transition-transform" />
                           <span className="font-mono text-[10px] opacity-60 block mb-1">{exp.period}</span>
-                          <h5 className="font-bold leading-tight">{exp.role}</h5>
+                          <h5 className="font-bold leading-tight group-hover:text-red-600 transition-colors">{exp.role}</h5>
                           <div className="font-serif italic text-sm opacity-80 mb-1">{exp.company}</div>
-                          <p className="font-mono text-[10px] opacity-70 leading-relaxed">{exp.desc}</p>
+                          <p className="font-mono text-[10px] opacity-70 leading-relaxed line-clamp-2">{exp.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <SectionTitle>Publications</SectionTitle>
+                    <div className="relative border-l border-current ml-1 space-y-6 pl-6 py-2">
+                      {PUBLICATIONS.map((pub, i) => (
+                        <div key={i} className="relative group cursor-pointer" onClick={() => setSelectedPublication(pub)}>
+                          <div className="absolute -left-[29px] top-1.5 w-3 h-3 bg-red-600 rounded-full border-2 border-[var(--bg-paper)] group-hover:scale-125 transition-transform" />
+                          <h5 className="font-bold leading-tight group-hover:text-red-600 transition-colors text-sm">{pub.title}</h5>
+                          <div className="font-serif italic text-xs opacity-80 mt-1">{pub.publisher} • {pub.date}</div>
                         </div>
                       ))}
                     </div>
@@ -505,6 +633,9 @@ export default function App() {
               </div>
             </div>
           )}
+
+          <ExperienceModal experience={selectedExperience} onClose={() => setSelectedExperience(null)} />
+          <PublicationModal publication={selectedPublication} onClose={() => setSelectedPublication(null)} />
 
           {/* PROJECTS PAGE VIEW */}
           {activePage === 'projects' && (
