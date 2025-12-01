@@ -10,6 +10,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import frontMatter from 'front-matter';
 import 'katex/dist/katex.min.css';
+import gsap from 'gsap';
 
 // --- Styled Components & Icons Helpers ---
 
@@ -154,10 +155,34 @@ const PROJECTS = [
   }
 ];
 
-const STACK = [
-  "Python / PyTorch", "TensorFlow / Keras", "Scikit-learn", "OpenCV",
-  "Docker / Kubernetes", "AWS SageMaker", "FastAPI / Flask", "React / Next.js"
-];
+
+
+const CATEGORIZED_STACK = {
+  "Mathematical Foundations": [
+    "Statistics & Probability",
+    "Multivariate Calculus",
+    "Convex Optimization",
+    "Linear Algebra"
+  ],
+  "Models & Applications": [
+    "Computer Vision",
+    "Forecasting & Predictive Modeling",
+    "Natural Language Processing (NLP)"
+  ],
+  "Advanced Architectures": [
+    "Model Context Protocol",
+    "LangChain & LangGraph",
+    "GraphRAG & RAG Architectures",
+    "Neo4j & FAISS (Vector DBs)",
+    "Agentic Workflows"
+  ],
+  "MLOps & Engineering": [
+    "Docker",
+    "AWS SageMaker",
+    "FastAPI & Flask",
+    "Gradio"
+  ]
+};
 
 const EXPERIENCE = [
   {
@@ -533,7 +558,7 @@ export default function App() {
               {/* Grid with full height columns */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-0 border-t border-current flex-grow items-stretch">
                 {/* LEFT COLUMN */}
-                <aside className="col-span-1 md:col-span-3 border-b md:border-b-0 md:border-r border-current p-6 flex flex-col gap-12 min-h-full">
+                <aside className="col-span-1 md:col-span-3 border-b md:border-b-0 md:border-r border-current p-6 flex flex-col min-h-full justify-between">
                   <div className="space-y-4">
                     <div className={`aspect-[4/5] w-full bg-zinc-800 relative overflow-hidden group`}>
                       <img
@@ -576,7 +601,19 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="border-t border-dashed border-current pt-8 mt-auto">
+                  <div className="border-t border-dashed border-current pt-8">
+                    <h4 className="font-mono text-sm font-bold uppercase mb-6">Hobbies</h4>
+                    <div className="flex flex-col gap-3 font-mono text-sm">
+                      {["Swimming", "Sketching/Drawing", "Singing", "Blogging", "Football", "Keeping up with ML landscape"].map((hobby) => (
+                        <div key={hobby} className="flex items-center gap-3 opacity-80 hover:text-red-600 transition-colors cursor-default">
+                          <div className="w-1.5 h-1.5 bg-red-600 rounded-full flex-shrink-0" />
+                          {hobby}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="border-t border-dashed border-current pt-8">
                     <h4 className="font-mono text-sm font-bold uppercase mb-6">Languages</h4>
                     <div className="space-y-4 font-mono text-sm">
                       <div className="flex items-center justify-between">
@@ -612,11 +649,11 @@ export default function App() {
                 <section className="col-span-1 md:col-span-6 p-6 md:px-8 border-b md:border-b-0 md:border-r border-current relative min-h-full flex flex-col">
                   <Badge>Lead Story</Badge>
 
-                  <h2 className="font-serif text-5xl md:text-7xl font-bold mt-6 mb-2 leading-[0.9] tracking-tight w-full">
+                  <h2 className="font-serif text-5xl md:text-7xl font-bold mt-4 mb-2 leading-[0.9] tracking-tight w-full">
                     My <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">Professional</span> Journey
                   </h2>
 
-                  <div className="font-mono text-xs md:text-sm leading-relaxed text-justify opacity-90 columns-1 md:columns-2 gap-6 space-y-4">
+                  <div className="font-mono text-sm md:text-base leading-relaxed text-justify opacity-90 columns-1 md:columns-2 gap-6 space-y-4">
                     <p>
                       <span className="text-4xl float-left mr-2 font-serif font-bold leading-none mt-[-4px]">I</span>
                       n an era of hype, I focus on what works.
@@ -632,46 +669,70 @@ export default function App() {
                     </p>
                   </div>
 
-                  <div className="mt-auto pt-8 border-t border-current">
-                    <SectionTitle>Tech Stack</SectionTitle>
-                    <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
-                      {STACK.map(tech => (
-                        <li key={tech} className="flex items-center gap-2 font-mono text-xs border-b border-dashed border-current/30 pb-2">
-                          <div className="w-1.5 h-1.5 bg-red-600" />
-                          {tech}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="mt-6 pt-6 border-t border-current">
+                    {/* Education Section */}
+                    <div className="mb-8">
+                      <SectionTitle>Education</SectionTitle>
+                      <div className="space-y-6">
+                        <div>
+                          <h4 className="font-bold text-lg leading-none mb-1">Vellore Institute of Technology</h4>
+                          <div className="font-serif italic text-sm opacity-80 mb-1">B.Tech Computer Science Engineering with specialization in Artificial Intelligence and Machine Learning</div>
+                          <div className="font-mono text-sm opacity-70">2020 - 2024 • <span className="font-bold text-red-600">8.88 CGPA</span></div>
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-lg leading-none mb-1">Maharishi Vidya Mandir</h4>
+                          <div className="font-serif italic text-sm opacity-80 mb-1">Senior Secondary (Computer Science)</div>
+                          <div className="font-mono text-sm opacity-70">2019 - 2020 • <span className="font-bold text-red-600">90.6%</span></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Career Timeline (Moved from Right) */}
+                    <div className="mb-8">
+                      <SectionTitle>Career Timeline</SectionTitle>
+                      <div className="relative border-l border-current ml-1 space-y-8 pl-6 py-2">
+                        {EXPERIENCE.map((exp, i) => (
+                          <div key={i} className="relative group cursor-pointer" onClick={() => setSelectedExperience(exp)}>
+                            <div className="absolute -left-[29px] top-1.5 w-3 h-3 bg-red-600 rounded-full border-2 border-[var(--bg-paper)] group-hover:scale-125 transition-transform" />
+                            <span className="font-mono text-xs opacity-60 block mb-1">{exp.period}</span>
+                            <h5 className="font-bold leading-tight group-hover:text-red-600 transition-colors">{exp.role}</h5>
+                            <div className="font-serif italic text-sm opacity-80 mb-1">{exp.company}</div>
+                            <p className="font-mono text-xs opacity-70 leading-relaxed line-clamp-2">{exp.desc}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Publications (Moved from Right) */}
+                    <div>
+                      <SectionTitle>Publications</SectionTitle>
+                      <div className="relative border-l border-current ml-1 space-y-6 pl-6 py-2">
+                        {PUBLICATIONS.map((pub, i) => (
+                          <div key={i} className="relative group cursor-pointer" onClick={() => setSelectedPublication(pub)}>
+                            <div className="absolute -left-[29px] top-1.5 w-3 h-3 bg-red-600 rounded-full border-2 border-[var(--bg-paper)] group-hover:scale-125 transition-transform" />
+                            <h5 className="font-bold leading-tight group-hover:text-red-600 transition-colors text-sm">{pub.title}</h5>
+                            <div className="font-serif italic text-sm opacity-80 mt-1">{pub.publisher} • {pub.date}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </section>
 
                 {/* RIGHT COLUMN */}
-                <aside className="col-span-1 md:col-span-3 p-6 flex flex-col gap-8 min-h-full">
+                <aside className="col-span-1 md:col-span-3 p-6 flex flex-col min-h-full justify-between">
+                  {/* Open Science Community (Moved from Center) */}
                   <div>
-                    <SectionTitle>Career Timeline</SectionTitle>
-                    <div className="relative border-l border-current ml-1 space-y-8 pl-6 py-2">
-                      {EXPERIENCE.map((exp, i) => (
-                        <div key={i} className="relative group cursor-pointer" onClick={() => setSelectedExperience(exp)}>
-                          <div className="absolute -left-[29px] top-1.5 w-3 h-3 bg-red-600 rounded-full border-2 border-[var(--bg-paper)] group-hover:scale-125 transition-transform" />
-                          <span className="font-mono text-[10px] opacity-60 block mb-1">{exp.period}</span>
-                          <h5 className="font-bold leading-tight group-hover:text-red-600 transition-colors">{exp.role}</h5>
-                          <div className="font-serif italic text-sm opacity-80 mb-1">{exp.company}</div>
-                          <p className="font-mono text-[10px] opacity-70 leading-relaxed line-clamp-2">{exp.desc}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <SectionTitle>Publications</SectionTitle>
-                    <div className="relative border-l border-current ml-1 space-y-6 pl-6 py-2">
-                      {PUBLICATIONS.map((pub, i) => (
-                        <div key={i} className="relative group cursor-pointer" onClick={() => setSelectedPublication(pub)}>
-                          <div className="absolute -left-[29px] top-1.5 w-3 h-3 bg-red-600 rounded-full border-2 border-[var(--bg-paper)] group-hover:scale-125 transition-transform" />
-                          <h5 className="font-bold leading-tight group-hover:text-red-600 transition-colors text-sm">{pub.title}</h5>
-                          <div className="font-serif italic text-xs opacity-80 mt-1">{pub.publisher} • {pub.date}</div>
-                        </div>
-                      ))}
+                    <SectionTitle>Open Science Community</SectionTitle>
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="font-bold text-lg leading-none mb-1">Cohere Labs Open Science Community</h4>
+                        <div className="font-serif italic text-sm opacity-80 mb-1">Community Member</div>
+                        <div className="font-mono text-xs opacity-70 mb-2">Jun 2025 - Present</div>
+                        <p className="font-mono text-xs opacity-70 leading-relaxed text-justify">
+                          Selected as a member of the Cohere Labs Open Science Community, a global collective of researchers advancing LLM interpretability. Completed the intensive ML Summer School and participated in the 2025 Cohere Connect Conference, exchanging insights on agentic workflows with industry pioneers.
+                        </p>
+                      </div>
                     </div>
                   </div>
 
@@ -687,9 +748,31 @@ export default function App() {
                           ) : (
                             <h5 className="font-serif font-bold text-white leading-tight mb-1">{cred.title}</h5>
                           )}
-                          <div className="font-mono text-xs text-[#888]">
+                          <div className="font-mono text-sm text-[#888]">
                             {cred.issuer} • {cred.date}
                           </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+
+
+                  {/* Tech Stack (Moved from Center) */}
+                  <div className="mt-6">
+                    <SectionTitle>Tech Stack</SectionTitle>
+                    <div className="space-y-4">
+                      {Object.entries(CATEGORIZED_STACK).map(([category, items]) => (
+                        <div key={category}>
+                          <h4 className="font-bold text-xs uppercase text-red-600 mb-2 tracking-wider">{category}</h4>
+                          <ul className="grid grid-cols-1 gap-y-1">
+                            {items.map(tech => (
+                              <li key={tech} className="flex items-center gap-2 font-mono text-sm border-b border-dashed border-current/30 pb-1 last:border-0">
+                                <div className="w-1 h-1 bg-red-600 rounded-full" />
+                                {tech}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                       ))}
                     </div>
