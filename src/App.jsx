@@ -5,7 +5,6 @@ import {
   Brain, Database, Network, Terminal, BookOpen, PenTool, ArrowRight, ArrowLeft, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import MobileNavigation from './components/MobileNavigation';
-import gsap from 'gsap';
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
@@ -14,15 +13,15 @@ import 'katex/dist/katex.min.css';
 
 // --- Styled Components & Icons Helpers ---
 
-const SocialLink = ({ href, icon: Icon, label }) => (
+const SocialLink = ({ href, icon: Icon, label, size = 16, textSize = "text-xs" }) => (
   <a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
     className="flex items-center gap-2 group hover:text-red-600 transition-colors duration-200"
   >
-    <Icon size={16} />
-    <span className="font-mono text-xs uppercase tracking-wider group-hover:underline decoration-red-600 underline-offset-4">
+    <Icon size={size} />
+    <span className={`font-mono ${textSize} uppercase tracking-wider group-hover:underline decoration-red-600 underline-offset-4`}>
       {label}
     </span>
   </a>
@@ -97,6 +96,74 @@ const EXPERIENCE = [
 export default function App() {
   const [activePage, setActivePage] = useState('front'); // 'front', 'projects', 'blogs', 'contact'
   const [selectedBlogId, setSelectedBlogId] = useState(null);
+  const [githubProjects, setGithubProjects] = useState([]);
+  const [githubProfile, setGithubProfile] = useState(null);
+
+  // Configuration for Project Display
+  // Configuration for Project Display
+  const FEATURED_PROJECTS = [
+    'Gemma-3n-Finetuning',
+    'StratifyAI',
+    'Graph-RAG',
+    'Cross-Platform-Social-Media-Content-Scraper',
+    'vercel-portfolio'
+  ];
+
+  const PROJECT_OVERRIDES = {
+    'Gemma-3n-Finetuning': {
+      title: 'Gemma Alignment Paradigms',
+      description: 'A comparative study on aligning Google’s open source Gemma models using two paradigms: (1) RL-only fine-tuning using GRPO/PPO/DPO with a custom reward model, (2) A SFT+PEFT using LoRA/QLoRA based finetuning and (3) a staged SFT+PEFT (LoRA/QLoRA) pipeline followed by reinforcement Learning.'
+    },
+    'StratifyAI': {
+      title: 'Probabilistic Match Inference Engine',
+      description: 'An autonomous predictive modeling system that forecasts match outcomes via live game-state analysis. Leverages deep reinforcement learning to identify momentum shifts and quantify tactical volatility in real-time.'
+    },
+    'Graph-RAG': {
+      title: 'GraphRAG Psychotherapist Agent',
+      description: 'A production-grade Hybrid GraphRAG architecture for mental wellness support, engineered with real-time safety guardrails. Orchestrates a stateful LangGraph pipeline combining semantic search (Milvus) with knowledge graph reasoning (Neo4j) for grounded, hallucination-resistant clinical alignment. Built on an async FastAPI backend with pluggable LLM support (AWS Bedrock/OpenAI) and comprehensive observability, fully containerized via Docker for scalable AWS deployment.'
+    },
+    'Cross-Platform-Social-Media-Content-Scraper': {
+      title: 'Social Media ETL Pipeline',
+      description: 'A robust data ingestion engine designed to harvest unstructured content from dynamic Single Page Applications (Instagram, YouTube, Twitter, Reddit). Leverages Playwright for headless browser automation and APIs to handle client-side rendering and infinite scrolling. Implements a modular ETL workflow that scrapes, sanitizes, and serializes raw data into structured CSV datasets for downstream analytics.'
+    },
+    'vercel-portfolio': {
+      title: 'Portfolio',
+      description: 'The recursive interface you are currently navigating. Built with React and Vite, featuring a custom "Newspaper" design system, dynamic GitHub integration, and immersive GSAP animations. Engineered for performance and accessibility, serving as a live demonstration of modern frontend architecture.'
+    }
+  };
+
+  useEffect(() => {
+    // Fetch GitHub Repos
+    fetch('https://api.github.com/users/sanjay-ks23/repos?sort=pushed&per_page=100')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          const processedProjects = data
+            .filter(repo => FEATURED_PROJECTS.includes(repo.name))
+            .sort((a, b) => {
+              // Sort by the order defined in FEATURED_PROJECTS
+              return FEATURED_PROJECTS.indexOf(a.name) - FEATURED_PROJECTS.indexOf(b.name);
+            })
+            .map(repo => ({
+              ...repo,
+              name: PROJECT_OVERRIDES[repo.name]?.title || repo.name.replace(/-/g, ' '),
+              description: PROJECT_OVERRIDES[repo.name]?.description || repo.description
+            }));
+
+          setGithubProjects(processedProjects);
+        }
+      })
+      .catch(err => console.error('Error fetching repos:', err));
+
+    // Fetch GitHub Profile
+    fetch('https://api.github.com/users/sanjay-ks23')
+      .then(res => res.json())
+      .then(data => setGithubProfile(data))
+      .catch(err => console.error('Error fetching profile:', err));
+
+
+  }, []);
+
   const [blogs, setBlogs] = useState([]);
   const containerRef = useRef(null);
   const contentRef = useRef(null);
@@ -258,29 +325,31 @@ export default function App() {
               {/* Front Page Header */}
               <header className="mb-8 border-b-4 border-current pb-2 flex-shrink-0">
                 <div className="flex justify-between items-end mb-2">
-                  <div className="flex flex-col">
-                    <span className="font-mono text-xs md:text-sm uppercase tracking-[0.2em] mb-1 opacity-70">
+                  <div className="flex flex-col w-full">
+                    <div className="py-4 mb-2">
+                      <span className="font-mono text-xs md:text-sm font-bold uppercase tracking-[0.2em] mb-1 opacity-100">
+                        Hi, I'm
+                      </span>
+                      <h1 className="font-serif text-4xl md:text-6xl lg:text-8xl font-black tracking-tighter leading-none uppercase">
+                        <span className="text-red-600">Sanjay</span> Kuppusamy Saravanan
+                      </h1>
+                    </div>
+                    <span className="font-mono text-xs md:text-sm font-bold uppercase tracking-[0.2em] mb-1 opacity-100">
                       Machine Learning Engineer & AI Researcher
                     </span>
-                    <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.85] uppercase">
-                      The Sanjay <br className="md:hidden" /> Chronicle
-                    </h1>
                   </div>
                 </div>
                 <div className="flex flex-wrap items-center justify-between border-t-2 border-current pt-2 font-mono text-xs uppercase tracking-wider">
                   <div className="flex items-center gap-6">
-                    <span>Vol. 02</span>
-                    <span>•</span>
-                    <span>Issue 2025</span>
-                    <span>•</span>
-                    <span className="flex items-center gap-2">
-                      <MapPin size={12} /> Chennai, IN
-                    </span>
+                    <span>{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase()} • CHENNAI, IN</span>
                   </div>
                   <div className="flex items-center gap-6 hidden md:flex">
-                    <span>GPU Cluster: Online</span>
+                    <span className="flex items-center gap-2">
+                      GPU Cluster: Online
+                      <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
+                    </span>
                     <span>•</span>
-                    <span>Printed in the Neural Realm</span>
+                    <span>Running on Local compute</span>
                   </div>
                 </div>
               </header>
@@ -288,7 +357,7 @@ export default function App() {
               {/* Grid with full height columns */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-0 border-t border-current flex-grow items-stretch">
                 {/* LEFT COLUMN */}
-                <aside className="col-span-1 md:col-span-3 border-b md:border-b-0 md:border-r border-current p-6 flex flex-col gap-8 min-h-full">
+                <aside className="col-span-1 md:col-span-3 border-b md:border-b-0 md:border-r border-current p-6 flex flex-col gap-12 min-h-full">
                   <div className="space-y-4">
                     <div className={`aspect-[4/5] w-full bg-zinc-800 relative overflow-hidden group`}>
                       <img
@@ -301,62 +370,89 @@ export default function App() {
                       </div>
                     </div>
                     <div className="font-serif italic text-lg leading-snug">
-                      "Training models to understand the world, one epoch at a time."
+                      Hi there, this is what I look like.
                     </div>
                   </div>
 
-                  <div className="border-t border-dashed border-current pt-6">
-                    <h4 className="font-mono text-xs font-bold uppercase mb-4 text-red-600">Current Research</h4>
+                  <div className="border-t border-dashed border-current pt-8">
+                    <h4 className="font-mono text-xs font-bold uppercase mb-6 text-red-600">Current Research</h4>
                     <div className={`p-4 bg-zinc-800/50`}>
-                      <h5 className="font-bold mb-1">Project: Neural-Sync</h5>
-                      <p className="font-mono text-xs opacity-80 leading-relaxed">
-                        Investigating multi-modal alignment in large-scale foundation models.
-                      </p>
-                      <div className="w-full bg-current h-1 mt-3 opacity-20 overflow-hidden">
-                        <div className="h-full bg-red-600 w-3/4" />
+                      <h5 className="font-bold mb-1">Probabilistic Match Inference Engine</h5>
+                      <div className="w-full bg-zinc-700 h-1 mt-3 relative">
+                        <div className="h-full bg-red-600 w-1/4 relative shadow-[0_0_10px_rgba(220,38,38,0.8)]">
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,1)]" />
+                        </div>
                       </div>
                       <div className="flex justify-between font-mono text-[10px] mt-1 opacity-60">
                         <span>Training</span>
-                        <span>Epoch 45/100</span>
+                        <span>Epoch 25/100</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="border-t border-dashed border-current pt-6 mt-auto">
-                    <h4 className="font-mono text-xs font-bold uppercase mb-4">Connect</h4>
-                    <div className="flex flex-col gap-2">
-                      <SocialLink href="#" icon={Github} label="Github" />
-                      <SocialLink href="#" icon={Twitter} label="Twitter" />
-                      <SocialLink href="#" icon={Linkedin} label="LinkedIn" />
-                      <SocialLink href="#" icon={Mail} label="Email" />
+                  <div className="border-t border-dashed border-current pt-8">
+                    <h4 className="font-mono text-sm font-bold uppercase mb-6">Connect</h4>
+                    <div className="flex flex-col gap-4">
+                      <SocialLink href="https://github.com/sanjay-ks23" icon={Github} label="Github" size={20} textSize="text-sm" />
+                      <SocialLink href="https://x.com/Sanj_AI_space" icon={Twitter} label="Twitter" size={20} textSize="text-sm" />
+                      <SocialLink href="https://www.linkedin.com/in/sanjayks2317/" icon={Linkedin} label="LinkedIn" size={20} textSize="text-sm" />
+                      <SocialLink href="mailto:sanjaysaravanan2317@gmail.com" icon={Mail} label="Email" size={20} textSize="text-sm" />
+                    </div>
+                  </div>
+
+                  <div className="border-t border-dashed border-current pt-8 mt-auto">
+                    <h4 className="font-mono text-sm font-bold uppercase mb-6">Languages</h4>
+                    <div className="space-y-4 font-mono text-sm">
+                      <div className="flex items-center justify-between">
+                        <span>English</span>
+                        <div className="flex gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <div key={i} className="w-2 h-2 bg-red-600 rounded-full"></div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Tamil</span>
+                        <div className="flex gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <div key={i} className="w-2 h-2 bg-red-600 rounded-full"></div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between opacity-60">
+                        <span>German</span>
+                        <div className="flex gap-1">
+                          <div className="w-2 h-2 bg-red-600 rounded-full"></div>
+                          {[...Array(4)].map((_, i) => (
+                            <div key={i} className="w-2 h-2 border border-current rounded-full"></div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </aside>
 
                 {/* CENTER COLUMN */}
                 <section className="col-span-1 md:col-span-6 p-6 md:px-8 border-b md:border-b-0 md:border-r border-current relative min-h-full flex flex-col">
-                  <div className="absolute top-0 right-0 p-2 opacity-10">
-                    <Network size={120} />
-                  </div>
-
                   <Badge>Lead Story</Badge>
 
-                  <h2 className="font-serif text-5xl md:text-7xl font-bold mt-6 mb-6 leading-[0.9] tracking-tight">
-                    Architecting <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-900">Intelligence</span> <br />
-                    From Noise.
+                  <h2 className="font-serif text-5xl md:text-7xl font-bold mt-6 mb-6 leading-[0.9] tracking-tight w-full">
+                    My <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">Professional</span> Journey
                   </h2>
 
                   <div className="font-mono text-xs md:text-sm leading-relaxed text-justify opacity-90 columns-1 md:columns-2 gap-6 space-y-4">
                     <p>
-                      <span className="text-4xl float-left mr-2 font-serif font-bold leading-none mt-[-4px]">W</span>
-                      e live in an age of data abundance but insight scarcity. My mission is to bridge that gap using state-of-the-art machine learning. I don't just build models; I engineer systems that can reason, perceive, and adapt.
+                      <span className="text-4xl float-left mr-2 font-serif font-bold leading-none mt-[-4px]">I</span>
+                      n an era of hype, I focus on what works.
                     </p>
                     <p>
-                      With deep expertise in Computer Vision and NLP, I specialize in deploying robust AI solutions that solve real-world problems. From optimizing inference latency on edge devices to fine-tuning massive LLMs, I navigate the full stack of modern AI.
+                      I am a Machine Learning Engineer dedicated to building robust, scalable AI systems. My approach is simple: deep research backed by rigorous engineering. I don’t just train models; I design the pipelines, architectures, and deployment strategies that turn raw weights into usable products.
                     </p>
                     <p>
-                      Currently obsessed with the intersection of neuro-symbolic AI and efficient transformer architectures.
+                      My expertise spans the full stack of modern AI. From fine-tuning Large Language Models for specific reasoning tasks to optimizing Computer Vision algorithms for low-latency edge devices, I build systems that are efficient and reliable.
+                    </p>
+                    <p>
+                      Currently, I am investigating Neuro-Symbolic AI—combining the flexibility of neural networks with the logic of structured reasoning. I am driven by technical curiosity and a commitment to writing clean, maintainable code that solves real-world problems.
                     </p>
                   </div>
 
@@ -425,63 +521,121 @@ export default function App() {
 
               <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
                 <div className="col-span-1 md:col-span-8 grid grid-cols-1 gap-16">
-                  {PROJECTS.map((project, i) => (
-                    <article key={project.id} className="group relative">
-                      <div className="mb-4 overflow-hidden border border-current relative aspect-video">
-                        <div className="absolute inset-0 bg-current opacity-5 group-hover:opacity-10 transition-opacity" />
-                        <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 font-mono text-[10px] uppercase">
-                          {project.category}
+                  {githubProjects.length > 0 ? (
+                    githubProjects.map((project) => (
+                      <article key={project.id} className="group relative">
+                        <div className="mb-4 overflow-hidden border border-current relative aspect-video">
+                          <div className="absolute inset-0 bg-current opacity-5 group-hover:opacity-10 transition-opacity" />
+                          <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 font-mono text-[10px] uppercase">
+                            {project.language || 'Code'}
+                          </div>
+                          <div className="absolute bottom-2 left-2 font-mono text-xs bg-[#1a1a1a] px-1 border border-current">
+                            {new Date(project.updated_at).getFullYear()}
+                          </div>
                         </div>
-                        <div className="absolute bottom-2 left-2 font-mono text-xs bg-[#1a1a1a] px-1 border border-current">
-                          {project.year}
+
+                        <div className="flex justify-between items-start">
+                          <h3 className="font-serif text-3xl font-bold mb-2 group-hover:underline decoration-red-600 decoration-2 underline-offset-4">
+                            {project.name}
+                          </h3>
+                          <a href={project.html_url} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink size={18} className="opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-red-600" />
+                          </a>
                         </div>
-                      </div>
 
-                      <div className="flex justify-between items-start">
-                        <h3 className="font-serif text-3xl font-bold mb-2 group-hover:underline decoration-red-600 decoration-2 underline-offset-4">
-                          {project.title}
-                        </h3>
-                        <ExternalLink size={18} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </div>
+                        <p className="font-mono text-xs md:text-sm opacity-70 mb-4 leading-relaxed border-l-2 border-red-600 pl-3">
+                          {project.description || 'No description available.'}
+                        </p>
 
-                      <p className="font-mono text-xs md:text-sm opacity-70 mb-4 leading-relaxed border-l-2 border-red-600 pl-3">
-                        {project.description}
-                      </p>
-
-                      <div className="flex flex-wrap gap-2">
-                        {project.stack.map(tech => (
-                          <span key={tech} className="text-[10px] font-mono border border-current/30 px-1.5 py-0.5 opacity-60">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </article>
-                  ))}
+                        <div className="flex flex-wrap gap-2">
+                          {project.topics && project.topics.map(topic => (
+                            <span key={topic} className="text-[10px] font-mono border border-current/30 px-1.5 py-0.5 opacity-60">
+                              {topic}
+                            </span>
+                          ))}
+                        </div>
+                      </article>
+                    ))
+                  ) : (
+                    <div className="font-mono text-sm opacity-60">Loading Archives...</div>
+                  )}
                 </div>
 
-                {/* Github Contributions Moved Here */}
+                {/* Github Contributions Sidebar */}
                 <aside className="col-span-1 md:col-span-4 space-y-8">
                   <div className="border border-current p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="font-mono text-xs font-bold uppercase">Open Source</span>
-                      <Github size={16} />
-                    </div>
-                    <p className="font-mono text-xs opacity-70 mb-4">
-                      Active contributor to PyTorch ecosystem and various LLM inference libraries.
-                    </p>
-                    <div className="flex gap-1 flex-wrap">
-                      {[...Array(60)].map((_, i) => (
-                        <div
-                          key={i}
-                          className={`w-2 h-2 ${Math.random() > 0.3 ? 'bg-red-600' : 'bg-current opacity-20'}`}
-                        />
-                      ))}
-                    </div>
-                    <div className="mt-4 pt-4 border-t border-dashed border-current flex justify-between font-mono text-[10px] opacity-60">
-                      <span>1,243 Contributions</span>
-                      <span>2024</span>
-                    </div>
+                    {githubProfile ? (
+                      <a
+                        href={githubProfile.html_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between mb-4 group cursor-pointer"
+                      >
+                        <span className="font-mono text-xs font-bold uppercase group-hover:text-red-600 transition-colors">Contributor Profile</span>
+                        <Github size={16} className="group-hover:text-red-600 transition-colors" />
+                      </a>
+                    ) : (
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="font-mono text-xs font-bold uppercase">Contributor Profile</span>
+                        <Github size={16} />
+                      </div>
+                    )}
+
+                    {githubProfile ? (
+                      <>
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="relative w-16 h-16 rounded-full border-2 border-current overflow-hidden group/image">
+                            <img
+                              src={githubProfile.avatar_url}
+                              alt="Profile"
+                              className="w-full h-full object-cover grayscale group-hover/image:grayscale-0 transition-all duration-300"
+                            />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-lg leading-none">{githubProfile.name || githubProfile.login}</h4>
+                            <a
+                              href={githubProfile.html_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-mono text-xs opacity-60 hover:text-red-600"
+                            >
+                              @{githubProfile.login}
+                            </a>
+                          </div>
+                        </div>
+
+                        <p className="font-mono text-xs opacity-70 mb-4 leading-relaxed">
+                          {githubProfile.bio || 'Building things on the internet.'}
+                        </p>
+
+                        <div className="grid grid-cols-2 gap-4 border-t border-dashed border-current pt-4">
+                          <div>
+                            <span className="block font-mono text-[10px] opacity-60 uppercase">Repositories</span>
+                            <span className="font-serif text-2xl font-bold">{githubProfile.public_repos}</span>
+                          </div>
+                          <div>
+                            <span className="block font-mono text-[10px] opacity-60 uppercase">Followers</span>
+                            <span className="font-serif text-2xl font-bold">{githubProfile.followers}</span>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 pt-4 border-t border-dashed border-current flex justify-between font-mono text-[10px] opacity-60">
+                          <span>Active Status</span>
+                          <span className="text-green-300 flex items-center gap-2 font-bold tracking-wide text-xs">
+                            <span className="relative flex h-2.5 w-2.5">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-300 opacity-100" style={{ animationDuration: '1.2s' }}></span>
+                              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.8)]"></span>
+                            </span>
+                            ONLINE
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="font-mono text-xs opacity-60">Loading Profile...</div>
+                    )}
                   </div>
+
+
                 </aside>
               </div>
             </div>
