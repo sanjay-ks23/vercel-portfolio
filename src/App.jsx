@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Sun, Moon, ArrowUpRight, Github, Twitter, Linkedin,
   Mail, MapPin, Calendar, Layers, Cpu, Code, ExternalLink,
-  Brain, Database, Network, X, Terminal, BookOpen, PenTool, ArrowRight, ArrowLeft, ChevronLeft, ChevronRight
+  Brain, Database, Network, X, Terminal, BookOpen, PenTool, ArrowRight, ArrowLeft, ChevronLeft, ChevronRight,
+  TrendingUp, MessageSquare, Workflow, Bot, Box, Cloud, Server, Globe, Zap, Sigma, FunctionSquare, Binary, Scale
 } from 'lucide-react';
 import MobileNavigation from './components/MobileNavigation';
 import ReactMarkdown from 'react-markdown';
@@ -62,14 +63,7 @@ const ExperienceModal = ({ experience, onClose }) => {
             {experience.fullDescription}
           </div>
 
-          {experience.skills && (
-            <div className="mt-8 pt-4 border-t-2 border-black">
-              <div className="font-mono text-xs font-bold uppercase mb-2 bg-black text-white inline-block px-2 py-1">Skills Deployed</div>
-              <div className="font-mono text-xs leading-relaxed mt-2">
-                {experience.skills}
-              </div>
-            </div>
-          )}
+
         </div>
       </div>
     </div>
@@ -157,38 +151,124 @@ const PROJECTS = [
 
 
 
-const CATEGORIZED_STACK = {
-  "Mathematical Foundations": [
-    "Statistics & Probability",
-    "Multivariate Calculus",
-    "Convex Optimization",
-    "Linear Algebra"
-  ],
-  "Models & Applications": [
-    "Computer Vision",
-    "Forecasting & Predictive Modeling",
-    "Natural Language Processing (NLP)"
-  ],
-  "Advanced Architectures": [
-    "Model Context Protocol",
-    "LangChain & LangGraph",
-    "GraphRAG & RAG Architectures",
-    "Neo4j & FAISS (Vector DBs)",
-    "Agentic Workflows"
-  ],
-  "MLOps & Engineering": [
-    "Docker",
-    "AWS SageMaker",
-    "FastAPI & Flask",
-    "Gradio"
-  ]
+const TECH_STACK_DATA = {
+  "Mathematical Foundations": {
+    type: "ticker",
+    items: [
+      { name: "Linear Algebra", icon: Binary },
+      { name: "Multivariable Calculus", icon: FunctionSquare },
+      { name: "Probability & Statistics", icon: Sigma },
+      { name: "Convex Optimization", icon: TrendingUp },
+      { name: "Statistical Modeling", icon: Scale },
+      { name: "Machine Learning Theory", icon: BookOpen }
+    ]
+  },
+  "Core Technologies": {
+    type: "ticker",
+    items: [
+      { name: "Python", slug: "python" },
+      { name: "Git", slug: "git" },
+      { name: "GitHub", slug: "github" },
+      { name: "PyTorch", slug: "pytorch" },
+      { name: "scikit-learn", slug: "scikitlearn" }
+    ]
+  },
+  "Machine Learning & Deep Learning": {
+    type: "ticker",
+    items: [
+      { name: "Neural Networks", icon: Brain },
+      { name: "OpenCV", slug: "opencv" },
+      { name: "NLP", icon: MessageSquare },
+      { name: "Predictive Modeling", icon: TrendingUp }
+    ]
+  },
+  "LLMs & Open-Source": {
+    type: "ticker",
+    items: [
+      { name: "Llama", icon: Brain },
+      { name: "Hugging Face", slug: "huggingface" },
+      { name: "Quantization", icon: Cpu },
+      { name: "Mistral", icon: Cloud },
+      { name: "DeepSeek", icon: Brain }
+    ]
+  },
+  "RAG & Agentic AI": {
+    type: "ticker",
+    items: [
+      { name: "Weaviate", slug: "weaviate" },
+      { name: "LangChain", slug: "langchain" },
+      { name: "Faiss", icon: Database },
+      { name: "Graph-RAG", icon: Network },
+      { name: "MCP", icon: Workflow },
+      { name: "Agents", icon: Bot },
+      { name: "Workflows", icon: Zap }
+    ]
+  },
+  "Backend & Cloud": {
+    type: "ticker",
+    items: [
+      { name: "FastAPI", slug: "fastapi" },
+      { name: "Flask", slug: "flask" },
+      { name: "Docker", slug: "docker" },
+      { name: "AWS", slug: "amazonaws" },
+      { name: "GCP", slug: "googlecloud" }
+    ]
+  },
+  "Graph & Prototyping": {
+    type: "ticker",
+    items: [
+      { name: "Neo4j", slug: "neo4j" },
+      { name: "Streamlit", slug: "streamlit" },
+      { name: "Gradio", icon: Box }
+    ]
+  }
+};
+
+const TechTicker = ({ items, direction = "left" }) => {
+  // Calculate duration based on item count to ensure consistent speed (e.g., 6 seconds per item)
+  const duration = items.length * 6;
+
+  return (
+    <div className="relative flex overflow-hidden w-full mask-linear-fade">
+      <div
+        className={`flex gap-6 py-2 animate-scroll whitespace-nowrap ${direction === "right" ? "direction-reverse" : ""}`}
+        style={{ animationDuration: `${duration}s`, animationTimingFunction: 'linear' }}
+      >
+        {[...items, ...items, ...items, ...items].map((item, i) => (
+          <div key={i} className="flex items-center gap-2 group">
+            {item.slug ? (
+              <div
+                className="w-5 h-5 bg-current text-white group-hover:bg-red-600 transition-all"
+                style={{
+                  maskImage: `url(https://cdn.simpleicons.org/${item.slug})`,
+                  WebkitMaskImage: `url(https://cdn.simpleicons.org/${item.slug})`,
+                  maskSize: 'contain',
+                  WebkitMaskSize: 'contain',
+                  maskRepeat: 'no-repeat',
+                  WebkitMaskRepeat: 'no-repeat',
+                  maskPosition: 'center',
+                  WebkitMaskPosition: 'center'
+                }}
+              />
+            ) : item.icon ? (
+              <item.icon size={20} className="text-white group-hover:text-red-600 transition-colors" />
+            ) : null}
+            <span className="font-mono text-sm font-bold uppercase tracking-wider text-white group-hover:text-red-600 transition-colors">
+              {item.name}
+            </span>
+            <span className="opacity-30">•</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 const EXPERIENCE = [
   {
     period: "Oct 2025 - Present",
     role: "Machine Learning Engineer",
-    company: "HyER Power",
+    company: "HyER Power B.V.",
     type: "Freelance",
     duration: "3 mos",
     location: "Remote",
@@ -475,6 +555,24 @@ export default function App() {
           background-color: #1a1a1a;
           /* Removed box-shadow for flat look */
         }
+        
+        @keyframes scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        
+        .animate-scroll {
+          animation: scroll linear infinite;
+        }
+        
+        .direction-reverse {
+          animation-direction: reverse;
+        }
+
+        .mask-linear-fade {
+          mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
       `}</style>
 
       <MobileNavigation activePage={activePage} onNavigate={handlePageChange} />
@@ -603,9 +701,9 @@ export default function App() {
 
                   <div className="border-t border-dashed border-current pt-8">
                     <h4 className="font-mono text-sm font-bold uppercase mb-6">Hobbies</h4>
-                    <div className="flex flex-col gap-3 font-mono text-sm">
+                    <div className="flex flex-col gap-3 font-mono text-base">
                       {["Swimming", "Sketching/Drawing", "Singing", "Blogging", "Football", "Keeping up with ML landscape"].map((hobby) => (
-                        <div key={hobby} className="flex items-center gap-3 opacity-80 hover:text-red-600 transition-colors cursor-default">
+                        <div key={hobby} className="flex items-center gap-3 opacity-100 hover:text-red-600 transition-colors cursor-default">
                           <div className="w-1.5 h-1.5 bg-red-600 rounded-full flex-shrink-0" />
                           {hobby}
                         </div>
@@ -615,7 +713,7 @@ export default function App() {
 
                   <div className="border-t border-dashed border-current pt-8">
                     <h4 className="font-mono text-sm font-bold uppercase mb-6">Languages</h4>
-                    <div className="space-y-4 font-mono text-sm">
+                    <div className="space-y-4 font-mono text-base">
                       <div className="flex items-center justify-between">
                         <span>English</span>
                         <div className="flex gap-1">
@@ -654,18 +752,13 @@ export default function App() {
                   </h2>
 
                   <div className="font-mono text-sm md:text-base leading-relaxed text-justify opacity-90 columns-1 md:columns-2 gap-6 space-y-4">
-                    <p>
-                      <span className="text-4xl float-left mr-2 font-serif font-bold leading-none mt-[-4px]">I</span>
-                      n an era of hype, I focus on what works.
+                    <p className="font-serif text-base md:text-lg leading-relaxed text-justify font-medium text-gray-300">
+                      I am an <span className="font-bold text-red-500">AI/ML Engineer</span> with a passion for building intelligent systems that bridge the gap between theoretical research and real-world application.
+                      My work focuses on <span className="font-bold text-white">Agentic AI</span>, <span className="font-bold text-white">RAG Architectures</span>, and <span className="font-bold text-white">Model Context Protocol (MCP)</span>.
                     </p>
-                    <p>
-                      I am a Machine Learning Engineer dedicated to building robust, scalable AI systems. My approach is simple: deep research backed by rigorous engineering. I don’t just train models; I design the pipelines, architectures, and deployment strategies that turn raw weights into usable products.
-                    </p>
-                    <p>
-                      My expertise spans the full stack of modern AI. From fine-tuning Large Language Models for specific reasoning tasks to optimizing Computer Vision algorithms for low-latency edge devices, I build systems that are efficient and reliable.
-                    </p>
-                    <p>
-                      Currently, I am investigating Neuro-Symbolic AI—combining the flexibility of neural networks with the logic of structured reasoning. I am driven by technical curiosity and a commitment to writing clean, maintainable code that solves real-world problems.
+                    <p className="font-serif text-base md:text-lg leading-relaxed text-justify font-medium text-gray-300 mt-4">
+                      I thrive on solving complex problems, from optimizing <span className="font-bold text-white">inference engines</span> to designing scalable <span className="font-bold text-white">backend infrastructure</span>.
+                      I am driven by technical curiosity and a commitment to writing clean, maintainable code that solves real-world problems.
                     </p>
                   </div>
 
@@ -673,31 +766,43 @@ export default function App() {
                     {/* Education Section */}
                     <div className="mb-8">
                       <SectionTitle>Education</SectionTitle>
-                      <div className="space-y-6">
-                        <div>
-                          <h4 className="font-bold text-lg leading-none mb-1">Vellore Institute of Technology</h4>
-                          <div className="font-serif italic text-sm opacity-80 mb-1">B.Tech Computer Science Engineering with specialization in Artificial Intelligence and Machine Learning</div>
-                          <div className="font-mono text-sm opacity-70">2020 - 2024 • <span className="font-bold text-red-600">8.88 CGPA</span></div>
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-lg leading-none mb-1">Maharishi Vidya Mandir</h4>
-                          <div className="font-serif italic text-sm opacity-80 mb-1">Senior Secondary (Computer Science)</div>
-                          <div className="font-mono text-sm opacity-70">2019 - 2020 • <span className="font-bold text-red-600">90.6%</span></div>
-                        </div>
+                      <div className="space-y-6 relative border-l border-current ml-1 pl-6 py-2">
+                        {[
+                          { degree: "B.Tech Computer Science Engineering with specialization in Artificial Intelligence and Machine Learning", institution: "Vellore Institute of Technology", year: "2020 - 2024", grade: "8.88" },
+                          { degree: "Senior Secondary (Computer Science)", institution: "Maharishi Vidya Mandir", year: "2019 - 2020", grade: "90.6%" }
+                        ].map((edu, i) => (
+                          <div key={i} className="relative">
+                            <div className="absolute -left-[31px] top-1.5 w-2.5 h-2.5 rounded-full bg-red-600 border-2 border-[#1a1a1a]" />
+                            <h3 className="font-serif text-xl font-bold leading-none mb-1">{edu.degree}</h3>
+                            <div className="font-mono text-sm font-medium mb-2 text-gray-400">
+                              {edu.institution} • {edu.year}
+                            </div>
+                            <div className="font-mono text-base font-bold text-red-500">
+                              {edu.degree.includes("Senior Secondary") ? "Percentage" : "CGPA"}: {edu.grade}
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
                     {/* Career Timeline (Moved from Right) */}
                     <div className="mb-8">
-                      <SectionTitle>Career Timeline</SectionTitle>
+                      <SectionTitle>
+                        Career Timeline
+                        <span className="font-mono text-[10px] font-normal opacity-75 ml-3 normal-case tracking-normal">(click for details)</span>
+                      </SectionTitle>
                       <div className="relative border-l border-current ml-1 space-y-8 pl-6 py-2">
                         {EXPERIENCE.map((exp, i) => (
                           <div key={i} className="relative group cursor-pointer" onClick={() => setSelectedExperience(exp)}>
-                            <div className="absolute -left-[29px] top-1.5 w-3 h-3 bg-red-600 rounded-full border-2 border-[var(--bg-paper)] group-hover:scale-125 transition-transform" />
-                            <span className="font-mono text-xs opacity-60 block mb-1">{exp.period}</span>
-                            <h5 className="font-bold leading-tight group-hover:text-red-600 transition-colors">{exp.role}</h5>
-                            <div className="font-serif italic text-sm opacity-80 mb-1">{exp.company}</div>
-                            <p className="font-mono text-xs opacity-70 leading-relaxed line-clamp-2">{exp.desc}</p>
+                            <div className="absolute -left-[31px] top-1.5 w-2.5 h-2.5 rounded-full bg-red-600 border-2 border-[#1a1a1a]" />
+                            <h3 className="font-serif text-xl font-bold leading-none mb-1 group-hover:text-red-600 transition-colors">{exp.role}</h3>
+                            <div className="font-mono text-sm font-bold uppercase tracking-wider text-red-600 mb-2">{exp.company}</div>
+                            <div className="font-mono text-sm font-medium mb-4 text-gray-400">
+                              {exp.period} • {exp.location}
+                            </div>
+                            <p className="font-serif text-base leading-relaxed font-medium text-gray-300">
+                              {exp.desc}
+                            </p>
                           </div>
                         ))}
                       </div>
@@ -705,13 +810,20 @@ export default function App() {
 
                     {/* Publications (Moved from Right) */}
                     <div>
-                      <SectionTitle>Publications</SectionTitle>
+                      <SectionTitle>
+                        Publications
+                        <span className="font-mono text-[10px] font-normal opacity-75 ml-3 normal-case tracking-normal">(click for details)</span>
+                      </SectionTitle>
                       <div className="relative border-l border-current ml-1 space-y-6 pl-6 py-2">
                         {PUBLICATIONS.map((pub, i) => (
                           <div key={i} className="relative group cursor-pointer" onClick={() => setSelectedPublication(pub)}>
-                            <div className="absolute -left-[29px] top-1.5 w-3 h-3 bg-red-600 rounded-full border-2 border-[var(--bg-paper)] group-hover:scale-125 transition-transform" />
-                            <h5 className="font-bold leading-tight group-hover:text-red-600 transition-colors text-sm">{pub.title}</h5>
-                            <div className="font-serif italic text-sm opacity-80 mt-1">{pub.publisher} • {pub.date}</div>
+                            <div className="absolute -left-[31px] top-1.5 w-2.5 h-2.5 rounded-full bg-red-600 border-2 border-[#1a1a1a]" />
+                            <h3 className="font-serif text-xl font-bold leading-tight mb-1 group-hover:text-red-600 transition-colors">
+                              {pub.title}
+                            </h3>
+                            <div className="font-mono text-sm font-medium text-gray-400">
+                              {pub.publisher} • {pub.date}
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -736,21 +848,24 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="mt-12">
                     <SectionTitle>Verified Credentials</SectionTitle>
                     <div className="flex flex-col">
                       {CREDENTIALS.map((cred, i) => (
                         <div key={i} className="border-b border-gray-800 py-3 last:border-0">
-                          {cred.link ? (
-                            <a href={cred.link} target="_blank" rel="noopener noreferrer" className="group">
-                              <h5 className="font-serif font-bold text-white leading-tight mb-1 group-hover:text-red-600 transition-colors">{cred.title}</h5>
-                            </a>
-                          ) : (
-                            <h5 className="font-serif font-bold text-white leading-tight mb-1">{cred.title}</h5>
-                          )}
-                          <div className="font-mono text-sm text-[#888]">
-                            {cred.issuer} • {cred.date}
-                          </div>
+                          <a
+                            href={cred.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block group"
+                          >
+                            <h3 className="font-serif text-base font-bold leading-tight mb-1 group-hover:text-red-600 transition-colors">
+                              {cred.title}
+                            </h3>
+                            <div className="font-mono text-xs font-medium text-gray-300">
+                              {cred.issuer} • {cred.date}
+                            </div>
+                          </a>
                         </div>
                       ))}
                     </div>
@@ -761,18 +876,26 @@ export default function App() {
                   {/* Tech Stack (Moved from Center) */}
                   <div className="mt-6">
                     <SectionTitle>Tech Stack</SectionTitle>
-                    <div className="space-y-4">
-                      {Object.entries(CATEGORIZED_STACK).map(([category, items]) => (
-                        <div key={category}>
+                    <div className="space-y-3">
+                      {Object.entries(TECH_STACK_DATA).map(([category, data], index) => (
+                        <div key={category} className="border-b border-dashed border-current/30 pb-4 last:border-0">
                           <h4 className="font-bold text-xs uppercase text-red-600 mb-2 tracking-wider">{category}</h4>
-                          <ul className="grid grid-cols-1 gap-y-1">
-                            {items.map(tech => (
-                              <li key={tech} className="flex items-center gap-2 font-mono text-sm border-b border-dashed border-current/30 pb-1 last:border-0">
-                                <div className="w-1 h-1 bg-red-600 rounded-full" />
-                                {tech}
-                              </li>
-                            ))}
-                          </ul>
+
+                          {data.type === "text" ? (
+                            <div className="flex flex-wrap gap-x-4 gap-y-1">
+                              {data.items.map(item => (
+                                <span key={item} className="font-mono text-xs opacity-70 relative pl-3 before:content-['•'] before:absolute before:left-0 before:opacity-50">
+                                  {item}
+                                </span>
+                              ))}
+                            </div>
+                          ) : (
+                            <TechTicker
+                              items={data.items}
+                              direction={index % 2 === 0 ? "left" : "right"}
+                              speed={25 + (index * 2)}
+                            />
+                          )}
                         </div>
                       ))}
                     </div>
