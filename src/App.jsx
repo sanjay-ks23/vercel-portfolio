@@ -369,52 +369,78 @@ const CREDENTIALS = [
   }
 ];
 
+// --- Constants & Helpers ---
+
+const FEATURED_PROJECTS = [
+  'Gemma-3n-Finetuning',
+  'StratifyAI',
+  'Graph-RAG',
+  'Cross-Platform-Social-Media-Content-Scraper',
+  'vercel-portfolio'
+];
+
+const PROJECT_OVERRIDES = {
+  'Gemma-3n-Finetuning': {
+    title: 'Gemma Alignment Paradigms',
+    description: 'A comparative study on aligning Google’s open source Gemma models using two paradigms: (1) RL-only fine-tuning using GRPO/PPO/DPO with a custom reward model, (2) A SFT+PEFT using LoRA/QLoRA based finetuning and (3) a staged SFT+PEFT (LoRA/QLoRA) pipeline followed by reinforcement Learning.',
+    html_url: 'https://github.com/sanjay-ks23/Gemma-3n-Finetuning',
+    topics: ['Deep Learning', 'RLHF', 'LLMs', 'PyTorch']
+  },
+  'StratifyAI': {
+    title: 'Probabilistic Match Inference Engine',
+    description: 'An autonomous predictive modeling system that forecasts match outcomes via live game-state analysis. Leverages deep reinforcement learning to identify momentum shifts and quantify tactical volatility in real-time.',
+    html_url: 'https://github.com/sanjay-ks23/StratifyAI',
+    topics: ['Reinforcement Learning', 'Predictive Modeling', 'Python']
+  },
+  'Graph-RAG': {
+    title: 'GraphRAG Psychotherapist Agent',
+    description: 'A production-grade Hybrid GraphRAG architecture for mental wellness support, engineered with real-time safety guardrails. Orchestrates a stateful LangGraph pipeline combining semantic search (Milvus) with knowledge graph reasoning (Neo4j) for grounded, hallucination-resistant clinical alignment. Built on an async FastAPI backend with pluggable LLM support (AWS Bedrock/OpenAI) and comprehensive observability, fully containerized via Docker for scalable AWS deployment.',
+    html_url: 'https://github.com/sanjay-ks23/Graph-RAG',
+    topics: ['RAG', 'LangChain', 'Neo4j', 'FastAPI']
+  },
+  'Cross-Platform-Social-Media-Content-Scraper': {
+    title: 'Social Media ETL Pipeline',
+    description: 'A robust data ingestion engine designed to harvest unstructured content from dynamic Single Page Applications (Instagram, YouTube, Twitter, Reddit). Leverages Playwright for headless browser automation and APIs to handle client-side rendering and infinite scrolling. Implements a modular ETL workflow that scrapes, sanitizes, and serializes raw data into structured CSV datasets for downstream analytics.',
+    html_url: 'https://github.com/sanjay-ks23/Cross-Platform-Social-Media-Content-Scraper',
+    topics: ['Web Scraping', 'ETL', 'Playwright', 'Python']
+  },
+  'vercel-portfolio': {
+    title: 'Portfolio',
+    description: 'The recursive interface you are currently navigating. Built with React and Vite, featuring a custom "Newspaper" design system, dynamic GitHub integration, and immersive GSAP animations. Engineered for performance and accessibility, serving as a live demonstration of modern frontend architecture.',
+    html_url: 'https://github.com/sanjay-ks23/vercel-portfolio',
+    topics: ['React', 'Vite', 'TailwindCSS', 'GSAP']
+  }
+};
+
+const getInitialProjects = () => {
+  return FEATURED_PROJECTS.map(repoName => {
+    const override = PROJECT_OVERRIDES[repoName] || {};
+    return {
+      name: override.title || repoName.replace(/-/g, ' '),
+      description: override.description || 'Loading description...',
+      html_url: override.html_url || `https://github.com/sanjay-ks23/${repoName}`,
+      topics: override.topics || [],
+      stargazers_count: null,
+      forks_count: null,
+      watchers_count: null,
+      language: 'Python'
+    };
+  });
+};
+
 // --- Main Application ---
 
 export default function App() {
   const [activePage, setActivePage] = useState('front'); // 'front', 'projects', 'blogs', 'contact'
   const [selectedBlogId, setSelectedBlogId] = useState(null);
-  const [githubProjects, setGithubProjects] = useState([]);
+  const [githubProjects, setGithubProjects] = useState(getInitialProjects());
   const [githubProfile, setGithubProfile] = useState(null);
-
-  // Configuration for Project Display
-  // Configuration for Project Display
-  const FEATURED_PROJECTS = [
-    'Gemma-3n-Finetuning',
-    'StratifyAI',
-    'Graph-RAG',
-    'Cross-Platform-Social-Media-Content-Scraper',
-    'vercel-portfolio'
-  ];
-
-  const PROJECT_OVERRIDES = {
-    'Gemma-3n-Finetuning': {
-      title: 'Gemma Alignment Paradigms',
-      description: 'A comparative study on aligning Google’s open source Gemma models using two paradigms: (1) RL-only fine-tuning using GRPO/PPO/DPO with a custom reward model, (2) A SFT+PEFT using LoRA/QLoRA based finetuning and (3) a staged SFT+PEFT (LoRA/QLoRA) pipeline followed by reinforcement Learning.'
-    },
-    'StratifyAI': {
-      title: 'Probabilistic Match Inference Engine',
-      description: 'An autonomous predictive modeling system that forecasts match outcomes via live game-state analysis. Leverages deep reinforcement learning to identify momentum shifts and quantify tactical volatility in real-time.'
-    },
-    'Graph-RAG': {
-      title: 'GraphRAG Psychotherapist Agent',
-      description: 'A production-grade Hybrid GraphRAG architecture for mental wellness support, engineered with real-time safety guardrails. Orchestrates a stateful LangGraph pipeline combining semantic search (Milvus) with knowledge graph reasoning (Neo4j) for grounded, hallucination-resistant clinical alignment. Built on an async FastAPI backend with pluggable LLM support (AWS Bedrock/OpenAI) and comprehensive observability, fully containerized via Docker for scalable AWS deployment.'
-    },
-    'Cross-Platform-Social-Media-Content-Scraper': {
-      title: 'Social Media ETL Pipeline',
-      description: 'A robust data ingestion engine designed to harvest unstructured content from dynamic Single Page Applications (Instagram, YouTube, Twitter, Reddit). Leverages Playwright for headless browser automation and APIs to handle client-side rendering and infinite scrolling. Implements a modular ETL workflow that scrapes, sanitizes, and serializes raw data into structured CSV datasets for downstream analytics.'
-    },
-    'vercel-portfolio': {
-      title: 'Portfolio',
-      description: 'The recursive interface you are currently navigating. Built with React and Vite, featuring a custom "Newspaper" design system, dynamic GitHub integration, and immersive GSAP animations. Engineered for performance and accessibility, serving as a live demonstration of modern frontend architecture.'
-    }
-  };
 
   const [selectedExperience, setSelectedExperience] = useState(null);
   const [selectedPublication, setSelectedPublication] = useState(null);
 
   useEffect(() => {
-    // Fetch GitHub Repos
+    // Fetch GitHub Repos (Progressive Enhancement)
     fetch('https://api.github.com/users/sanjay-ks23/repos?sort=pushed&per_page=100')
       .then(res => res.json())
       .then(data => {
@@ -422,27 +448,31 @@ export default function App() {
           const processedProjects = data
             .filter(repo => FEATURED_PROJECTS.includes(repo.name))
             .sort((a, b) => {
-              // Sort by the order defined in FEATURED_PROJECTS
               return FEATURED_PROJECTS.indexOf(a.name) - FEATURED_PROJECTS.indexOf(b.name);
             })
             .map(repo => ({
               ...repo,
               name: PROJECT_OVERRIDES[repo.name]?.title || repo.name.replace(/-/g, ' '),
-              description: PROJECT_OVERRIDES[repo.name]?.description || repo.description
+              description: PROJECT_OVERRIDES[repo.name]?.description || repo.description,
+              topics: PROJECT_OVERRIDES[repo.name]?.topics || repo.topics
             }));
 
-          setGithubProjects(processedProjects);
+          if (processedProjects.length > 0) {
+            setGithubProjects(processedProjects);
+          } else {
+            console.warn('Fetched repos but none matched FEATURED_PROJECTS. Keeping fallback data.');
+          }
         }
       })
-      .catch(err => console.error('Error fetching repos:', err));
+      .catch(err => {
+        console.warn('GitHub API failed, using fallback data:', err);
+      });
 
     // Fetch GitHub Profile
     fetch('https://api.github.com/users/sanjay-ks23')
       .then(res => res.json())
       .then(data => setGithubProfile(data))
       .catch(err => console.error('Error fetching profile:', err));
-
-
   }, []);
 
   const [blogs, setBlogs] = useState([]);
