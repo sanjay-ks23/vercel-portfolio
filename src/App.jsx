@@ -782,13 +782,17 @@ export default function App() {
                   </h2>
 
                   <div className="font-mono text-sm md:text-base leading-relaxed text-justify opacity-90 columns-1 md:columns-2 gap-6 space-y-4">
-                    <p className="font-serif text-base md:text-lg leading-relaxed text-justify font-medium text-gray-300">
-                      I am an <span className="font-bold text-red-500">AI/ML Engineer</span> with a passion for building intelligent systems that bridge the gap between theoretical research and real-world application.
-                      My work focuses on <span className="font-bold text-white">Agentic AI</span>, <span className="font-bold text-white">RAG Architectures</span>, and <span className="font-bold text-white">Model Context Protocol (MCP)</span>.
+                    <p className="font-serif text-base md:text-lg leading-relaxed text-justify font-medium text-gray-300 break-inside-avoid">
+                      I am an <span className="font-bold text-red-500">AI/ML Engineer</span> focused on building systems that operate in the real world—where data is messy, constraints are real, and decisions have tangible consequences. My work sits at the intersection of machine learning, energy systems, and software engineering, with a strong emphasis on turning theoretical ideas into tools that meaningfully reduce friction in complex domains.
                     </p>
-                    <p className="font-serif text-base md:text-lg leading-relaxed text-justify font-medium text-gray-300 mt-4">
-                      I thrive on solving complex problems, from optimizing <span className="font-bold text-white">inference engines</span> to designing scalable <span className="font-bold text-white">backend infrastructure</span>.
-                      I am driven by technical curiosity and a commitment to writing clean, maintainable code that solves real-world problems.
+                    <p className="font-serif text-base md:text-lg leading-relaxed text-justify font-medium text-gray-300 mt-4 break-inside-avoid">
+                      Over time, I’ve gravitated toward problems where correctness, uncertainty, and scale matter more than demos or benchmarks. This has led me to work on energy forecasting, industrial data pipelines, and decision-support systems, including applied research in wind energy forecasting and ongoing work on Energy Management Systems within early-stage climate and energy startups. These experiences shaped how I think about ML: not as isolated models, but as components within larger systems that must be reliable, interpretable, and deployable.
+                    </p>
+                    <p className="font-serif text-base md:text-lg leading-relaxed text-justify font-medium text-gray-300 mt-4 break-inside-avoid">
+                      Alongside this, I explore modern AI system design—<span className="font-bold text-white">agentic architectures</span>, <span className="font-bold text-white">retrieval-augmented generation</span>, and structured knowledge systems—not as trends, but as tools for reasoning over complex information. I’m particularly interested in how these approaches can be used responsibly to support high-stakes decision-making rather than replace it.
+                    </p>
+                    <p className="font-serif text-base md:text-lg leading-relaxed text-justify font-medium text-gray-300 mt-4 break-inside-avoid">
+                      What drives me is the opportunity to work on problems that compound in impact: decarbonization, infrastructure, and systems that enable better decisions at scale. I thrive in environments with ambiguity, where ownership matters and progress depends on thoughtful engineering rather than perfect specifications. My goal is simple: to build technology that is rigorous, grounded, and genuinely useful—technology that helps move difficult problems forward rather than adding complexity for its own sake.
                     </p>
                   </div>
 
